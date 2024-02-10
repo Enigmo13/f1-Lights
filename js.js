@@ -1,58 +1,62 @@
 document.body.addEventListener('mousedown',race_start);
-const time_p=document.getElementById('your_time_p')
-let show_time=document.getElementById('your_time');
-let timer1=document.getElementById('timer');
-document.body.addEventListener('keydown', function(event) {
+const bulbs=document.getElementsByClassName('bulb');
+const information_div=document.getElementById('your_time');
+const timer1=document.getElementById('timer');
+const score_board=document.getElementById('score_board');
+const restart_button=document.getElementById('restart_button');
+restart_button.addEventListener('click',restart);
+document.body.addEventListener('keydown',space_check)
+function space_check(event) {
     if (event.key === ' ' || event.code === 'Space') {
         race_start();
-}})
+}}
 var x = window.innerWidth / 2;
 var y = window.innerHeight / 2;
-show_time.style.left=(x-150)+'px';
-show_time.style.top=(y-75)+'px';
-window.addEventListener('resize',()=>{          //div position chanmge
-    console.log('resize')
-    x = window.innerWidth / 2;
-    y = window.innerHeight / 2;
-    show_time.style.left=(x-150)+'px';
-    show_time.style.top=(y-75)+'px';
-})
+information_div.style.left=(x-155)+'px';
+information_div.style.top=(y-75)+'px';
+restart_button.style.left=(x-85)+'px';
+restart_button.style.top=(y+75)+'px';
+//div centering
+window.addEventListener('resize',centering);
+let scores=[];
 let is_timer_started=false;
 let is_lights_on=false;
 let lights_time=0;
 let milliseconds=0;
+let all_miliseconds=0;
 let seconds=0;
 let minutes=0;
-var tmp_null=0;
-var tmp2_null=0;
-var tmp3_null=0;
-var falstart=0;
+let tmp_null=0;
+let tmp2_null=0;
+let tmp3_null=0;
+let falstart=0;
+let falstart_count=0;
+let tmp_additional_clicks=0;
 function race_start() {
-    let bulbs=document.getElementsByClassName('bulb');
-    timer1.classList.remove('falstart');
+    const time_p=document.getElementById('your_time_p')
+    //Show final time and end the counting
     if (is_timer_started) {
         clearInterval(lights_time);
-        show_time.classList.add('show_time');
-        time_p.innerText=tmp_null+minutes+':'+tmp2_null+seconds+':'+tmp3_null+milliseconds;
+        information_div.classList.add('show_time');
+        let final_time=tmp_null+minutes+':'+tmp2_null+seconds+':'+tmp3_null+milliseconds;
+        time_p.innerText=final_time;
+        score_board_f(all_miliseconds, final_time);
         is_timer_started=false;
     }else{
         if (!is_lights_on) {
-            for (let i = 0; i < bulbs.length; i++) {        //
-                bulbs[i].classList.remove('red_light');     //początkowe gaszenie świateł
-            }                                               //
-            falstart=0;
-            timer1.innerText="TIME: 00:00:00";    //ustawienie timera
-            show_time.classList.remove('show_time');                        //ustawienie pojemnika z wynikiem 
+            //Returning things to factory options
+            factory_options()
             is_lights_on=true
             let tmp_bulb=0;
             var red_lights=setInterval(() => {
-            if (falstart) {                                 //
-                console.log('fal1')                         //2 falstart check
-                clearInterval(red_lights);                  //
+            //Second falstart check
+            if (falstart) {
+                clearInterval(red_lights);
                 is_lights_on=false;
                 return;
             }else{
-                bulbs[tmp_bulb].classList.toggle('red_light')   //zapalanie świteł
+                //turnig on the lights
+                bulbs[tmp_bulb].classList.toggle('red_light')
             tmp_bulb++;
             }
             if (tmp_bulb==5) {
@@ -60,39 +64,51 @@ function race_start() {
                 milliseconds=0;
                 seconds=0;
                 minutes=0;
-                let random_time=(Math.floor(Math.random() * (300 - 100 + 1)) + 100) //losowanie czasu 1-3s
+                //randomizing time between 1 and 3 sec
+                let random_time=(Math.floor(Math.random() * (300 - 100 + 1)) + 100)
                 console.log(random_time)
                 let tmp_count1=0;
                 const random_time_interv=setInterval(() => {
                         tmp_count1++
                         if (!falstart) {
-                            if (tmp_count1>random_time) {               //akcja po przekroczeniu zadanego randomowego czasu
-                            clearInterval(random_time_interv);          //
+                            //checking if random time ends
+                            if (tmp_count1>random_time) {
+                            clearInterval(random_time_interv);
+                            //turning off the lights
                             for (let i = 0; i < bulbs.length; i++) {
-                                bulbs[i].classList.remove('red_light'); //gaszenie świateł
+                                bulbs[i].classList.remove('red_light');
                             }
                             is_lights_on=false;
                             clearInterval(red_lights);
-                            lights_time=setInterval(timer_update,10);  //załączanie stopera
+                            //turning on the stoper
+                            lights_time=setInterval(timer_update,10);
                             is_timer_started=true;
                             return;
                         }
-                        
-                    }else{
-                        clearInterval(random_time_interv);          //3 falstart check
-                        console.log('fal2')
-                        is_lights_on=false;
+                        }else{
+                            //third fallstart check
+                            clearInterval(random_time_interv);
+                            console.log('fal2')
+                            is_lights_on=false;
                     }
                 }, 10);
-                
             }
         }, 1000);
         }else{
-            falstart=true;                                          //1 falstart check
+            //First falstart check
+            if (tmp_additional_clicks<1) {
+                falstart_count++;
+                score_board_f('x','FALSTART');
+                if (falstart_count>=3) {
+                    loser();
+                }
+            }
+            tmp_additional_clicks++
+            falstart=true;
             timer1.innerText="X_X";
             timer1.classList.add('falstart');
             time_p.innerHTML="FALSTART";
-            show_time.classList.add('show_time');
+            information_div.classList.add('show_time');
             return;
         }
     }
@@ -100,6 +116,7 @@ function race_start() {
 function timer_update() {
     if (!falstart) {
        milliseconds++;
+       all_miliseconds++;
         if (milliseconds === 100) {
             milliseconds = 0;
             seconds++;
@@ -122,4 +139,65 @@ function timer_update() {
         return;
     }
     
+}
+function score_board_f(tmp_milliseconds, final) {
+    scores.unshift(final)
+    scores[0].key=tmp_milliseconds
+    document.querySelectorAll("li").forEach(li => {
+        li.remove();
+    });
+    scores.sort();
+    if (scores.length==11) {
+        scores.pop();
+    }
+    scores.forEach(element => {
+        let score_element = document.createElement("li");
+        score_element.innerHTML=element;
+        score_board.appendChild(score_element);
+    });
+}
+function centering() {
+    x = window.innerWidth / 2;
+    y = window.innerHeight / 2;
+    if (falstart_count!==3) {
+        information_div.style.left=(x-150)+'px';
+    }else{information_div.style.left=(x-200)+'px';}
+    information_div.style.top=(y-75)+'px';
+    restart_button.style.left=(x-85)+'px';
+    restart_button.style.top=(y+75)+'px';
+}
+function loser() {
+    document.body.removeEventListener('keydown', space_check)
+    document.body.removeEventListener('mousedown',race_start);
+    information_div.style.width="400px";
+    information_div.innerHTML="<p id='your_time_p'>PRZEGRAŁEŚ</p>";
+    information_div.style.left=(x-205)+'px';
+    restart_button.classList.add('show_time')
+}
+function restart() {
+    document.body.addEventListener('mousedown',race_start);
+    document.body.addEventListener('keydown', space_check);
+    document.querySelectorAll("li").forEach(li => {
+        li.remove();
+    });
+    scores=[];
+    falstart_count=0;
+    factory_options();
+}
+function factory_options() {
+    //hiding the information div
+    information_div.classList.remove('show_time');
+    information_div.style.width="300px";
+    centering();
+    //hiding the restart_button
+    restart_button.classList.remove('show_time'); 
+    timer1.classList.remove('falstart');
+    //set timer to base value
+    timer1.innerText="TIME: 00:00:00";
+    //lights off
+    for (let i = 0; i < bulbs.length; i++) {
+        bulbs[i].classList.remove('red_light');
+    }
+    falstart=0;
+    tmp_additional_clicks=0;
 }

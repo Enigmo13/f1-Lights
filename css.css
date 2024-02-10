@@ -78,6 +78,21 @@ html{
     width: 300px;
     font-size: 50px;
 }
+#restart_button{
+    user-select: none;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    /* background-color: rgb(168, 168, 168); */
+    background-color: black;
+    border-radius: 15%;
+    /* border: 5px solid rgb(61, 61, 61); */
+    border: 5px solid rgb(202, 0, 0);
+    height: 50px;
+    width: 160px;
+    font-size: 25px;
+}
 .show_time{
     display: flex !important;
     animation: click 0.2s linear;
@@ -95,4 +110,24 @@ html{
     color: red;
     transition: color 0.5s;
     animation: click 0.2s linear infinite;
+}
+#score_board_container{
+    position: absolute;
+    width: 112.469px;
+    height: max-content;
+    background-color: rgb(0, 0, 0);
+    border: 5px solid rgb(202, 0, 0);
+    color: white;
+    border-radius: 15%;
+    top: 40%;
+    left: 2%;
+    text-align: center;
+    padding: 10px;
+}
+ol{
+    padding-left: 25px;
+    margin: 0px;
+}
+li{
+    padding-right: 10px;
 }
