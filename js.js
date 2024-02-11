@@ -41,9 +41,15 @@ function race_start() {
     if (is_timer_started) {
         //measure accurate time
         end_date=Date.now()-start_date;
+        end_date_milliseconds=Number(String(end_date).slice(-3))
+        if (end_date_milliseconds<100) {
+            tmp3_avr_null='0';
+        }else if (end_date_milliseconds<10) {
+            tmp3_avr_null='00'
+        }else{tmp3_avr_null=''}
         clearInterval(lights_time);
         information_div.classList.add('show_time');
-        let tmp_final_time=tmp_null+minutes+':'+tmp2_null+seconds+':'+tmp3_null+String(end_date).slice(-3);
+        let tmp_final_time=tmp_null+minutes+':'+tmp2_null+seconds+':'+tmp3_null+end_date_milliseconds;
         console.log(tmp_final_time)
         time_p.innerText=tmp_final_time;
         score_board_f(tmp_final_time);
@@ -51,8 +57,8 @@ function race_start() {
         is_timer_started=false;
     }else{
         if (!is_lights_on) {
-            //Returning things to factory options
-            factory_options()
+            //Returning variables to starting options
+            starting_options()
             is_lights_on=true
             let tmp_bulb=0;
             var red_lights=setInterval(() => {
@@ -209,7 +215,7 @@ function centering() {
     y = window.innerHeight / 2;
     if (falstart_count!==3) {
         information_div.style.left=(x-150)+'px';
-    }else{information_div.style.left=(x-200)+'px';}
+    }else{information_div.style.left=(x-210)+'px';}
     information_div.style.top=(y-75)+'px';
     restart_button.style.left=(x-85)+'px';
     restart_button.style.top=(y+75)+'px';
@@ -218,8 +224,8 @@ function centering() {
 function loser() {
     document.body.removeEventListener('keydown', space_check)
     document.body.removeEventListener('mousedown',race_start);
-    information_div.style.width="400px";
-    information_div.innerHTML="<p id='your_time_p'>PRZEGRAŁEŚ</p>";
+    information_div.style.width="420px";
+    information_div.innerHTML="<p id='your_time_p'>YOU ARE LOSER</p>";
     information_div.style.left=(x-205)+'px';
     restart_button.classList.add('show_time')
 }
@@ -232,11 +238,12 @@ function restart() {
     });
     scores=[];
     avr_time_array=[];
+    avr_time_html.innerHTML='AVR TIME: 00:00:000'
     falstart_count=0;
-    factory_options();
+    starting_options();
 }
-//returning everything to factoryoptions
-function factory_options() {
+//returning variables to starting values
+function starting_options() {
     //hiding the information div
     information_div.classList.remove('show_time');
     information_div.style.width="300px";
