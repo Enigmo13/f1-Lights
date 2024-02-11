@@ -231,6 +231,7 @@ function restart() {
         li.remove();
     });
     scores=[];
+    avr_time_array=[];
     falstart_count=0;
     factory_options();
 }
