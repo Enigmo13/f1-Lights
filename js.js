@@ -3,9 +3,10 @@ const bulbs=document.getElementsByClassName('bulb');
 const information_div=document.getElementById('your_time');
 const timer1=document.getElementById('timer');
 const score_board=document.getElementById('score_board');
+const avr_time_html=document.getElementById('avr_time');
 const restart_button=document.getElementById('restart_button');
 restart_button.addEventListener('click',restart);
-document.body.addEventListener('keydown',space_check)
+document.body.addEventListener('keydown',space_check);
 function space_check(event) {
     if (event.key === ' ' || event.code === 'Space') {
         race_start();
@@ -18,6 +19,7 @@ restart_button.style.left=(x-85)+'px';
 restart_button.style.top=(y+75)+'px';
 window.addEventListener('resize',centering);
 let scores=[];
+let avr_time_array=[];
 let is_timer_started=false;
 let is_lights_on=false;
 let lights_time=0;
@@ -41,11 +43,11 @@ function race_start() {
         end_date=Date.now()-start_date;
         clearInterval(lights_time);
         information_div.classList.add('show_time');
-        end_date=String(end_date).slice(-3.-1)
-        let tmp_final_time=tmp_null+minutes+':'+tmp2_null+seconds+':'+tmp3_null+end_date;
+        let tmp_final_time=tmp_null+minutes+':'+tmp2_null+seconds+':'+tmp3_null+String(end_date).slice(-3);
         console.log(tmp_final_time)
         time_p.innerText=tmp_final_time;
         score_board_f(tmp_final_time);
+        avr_time_function();
         is_timer_started=false;
     }else{
         if (!is_lights_on) {
@@ -119,6 +121,7 @@ function race_start() {
         }
     }
 }
+//live timer
 function timer_update() {
     if (!falstart) {
        milliseconds++;
@@ -164,6 +167,41 @@ function score_board_f(final) {
         score_element.innerHTML=element;
         score_board.appendChild(score_element);
     });
+}
+//displaying avr time upper the scoreboard
+function avr_time_function() {
+    avr_time_array.unshift(end_date)
+    while (avr_time_array.length>=11) {
+        avr_time_array.pop();
+    }
+    let avr_time=0
+    let tmp_count_avr=0
+    avr_time_array.forEach(element => {
+        if (element!=="FALSTART") {
+            avr_time+=Number(element);
+            tmp_count_avr++
+        }
+    });
+    avr_time=avr_time/(avr_time_array.length)
+    avr_time=Math.round(avr_time)
+    let avr_milliseconds=String(avr_time).slice(-3)
+    let avr_minutes=Math.floor(Number(String(avr_time).slice(0,-3))/60)
+    let avr_seconds=Number(String(avr_time).slice(0,-3))-(minutes*60)
+    let tmp_avr_null='';
+    let tmp2_avr_null='';
+    let tmp3_avr_null='';
+    if (avr_minutes<10) {
+        tmp_avr_null='0';
+    }else{tmp_avr_null=''}
+    if (avr_seconds<10) {
+        tmp2_avr_null='0';
+    }else{tmp2_avr_null=''}
+    if (avr_milliseconds<100) {
+        tmp3_avr_null='0';
+    }else if (avr_milliseconds<10) {
+        tmp3_avr_null='00'
+    }else{tmp3_avr_null=''}
+    avr_time_html.innerHTML='AVR TIME: '+tmp_avr_null+avr_minutes+":"+tmp2_avr_null+avr_seconds+":"+tmp3_avr_null+avr_milliseconds
 }
 //centering information_div and restart_button
 function centering() {

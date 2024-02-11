@@ -111,6 +111,22 @@ html{
     transition: color 0.5s;
     animation: click 0.2s linear infinite;
 }
+#avr_time_container{
+    position: absolute;
+    width: 112.469px;
+    height: max-content;
+    background-color: rgb(0, 0, 0);
+    border: 5px solid rgb(202, 0, 0);
+    color: white;
+    border-radius: 15%;
+    top: 35%;
+    left: 2%;
+    text-align: center;
+    padding: 5px 10px 5px 10px;
+}
+#avr_time{
+    margin: 0;
+}
 #score_board_container{
     position: absolute;
     width: 112.469px;
@@ -119,7 +135,7 @@ html{
     border: 5px solid rgb(202, 0, 0);
     color: white;
     border-radius: 15%;
-    top: 40%;
+    top: 42%;
     left: 2%;
     text-align: center;
     padding: 10px;
