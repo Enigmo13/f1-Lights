@@ -4,6 +4,7 @@ const information_div=document.getElementById('your_time');
 const timer1=document.getElementById('timer');
 const score_board=document.getElementById('score_board');
 const avr_time_html=document.getElementById('avr_time');
+const best_time_html=document.getElementById("best_time");
 const restart_button=document.getElementById('restart_button');
 restart_button.addEventListener('click',restart);
 document.body.addEventListener('keydown',space_check);
@@ -14,9 +15,9 @@ function space_check(event) {
 var x = window.innerWidth / 2;
 var y = window.innerHeight / 2;
 information_div.style.left=(x-155)+'px';
-information_div.style.top=(y-75)+'px';
+// information_div.style.top=(y-75)+'px';
 restart_button.style.left=(x-85)+'px';
-restart_button.style.top=(y+75)+'px';
+// restart_button.style.top=(y+75)+'px';
 window.addEventListener('resize',centering);
 let scores=[];
 let avr_time_array=[];
@@ -54,6 +55,7 @@ function race_start() {
         time_p.innerText=tmp_final_time;
         score_board_f(tmp_final_time);
         avr_time_function();
+        best_time_check();
         is_timer_started=false;
     }else{
         if (!is_lights_on) {
@@ -157,6 +159,21 @@ function timer_update() {
     }
     
 }
+//check if localstorage is set at start
+if ((localStorage.getItem('best_time'))!==null) {
+    best_time_html.innerHTML="BEST TIME: "+return_timer_format(localStorage.getItem('best_time'));
+}
+//save best time in localstorage best time 
+function best_time_check(){
+    if ((localStorage.getItem('best_time'))==null) {
+        localStorage.setItem('best_time',end_date);
+    }
+    if (end_date<=localStorage.getItem('best_time')) {
+        localStorage.setItem('best_time',end_date);
+        console.log('NEW BEST')
+        best_time_html.innerHTML="BEST TIME: "+return_timer_format(end_date);
+    }
+}
 //score board controll
 function score_board_f(final) {
     scores.unshift(final)
@@ -177,6 +194,7 @@ function score_board_f(final) {
 //displaying avr time upper the scoreboard
 function avr_time_function() {
     avr_time_array.unshift(end_date)
+    avr_time_array.sort();
     while (avr_time_array.length>=11) {
         avr_time_array.pop();
     }
@@ -190,24 +208,29 @@ function avr_time_function() {
     });
     avr_time=avr_time/(avr_time_array.length)
     avr_time=Math.round(avr_time)
-    let avr_milliseconds=String(avr_time).slice(-3)
-    let avr_minutes=Math.floor(Number(String(avr_time).slice(0,-3))/60)
-    let avr_seconds=Number(String(avr_time).slice(0,-3))-(minutes*60)
-    let tmp_avr_null='';
-    let tmp2_avr_null='';
-    let tmp3_avr_null='';
-    if (avr_minutes<10) {
-        tmp_avr_null='0';
-    }else{tmp_avr_null=''}
-    if (avr_seconds<10) {
-        tmp2_avr_null='0';
-    }else{tmp2_avr_null=''}
-    if (avr_milliseconds<100) {
-        tmp3_avr_null='0';
-    }else if (avr_milliseconds<10) {
-        tmp3_avr_null='00'
-    }else{tmp3_avr_null=''}
-    avr_time_html.innerHTML='AVR TIME: '+tmp_avr_null+avr_minutes+":"+tmp2_avr_null+avr_seconds+":"+tmp3_avr_null+avr_milliseconds
+    avr_time_html.innerHTML='AVR TIME: '+return_timer_format(avr_time)
+}
+//return proper time format
+function return_timer_format(input) {
+    let _milliseconds=String(input).slice(-3)
+    let _minutes=Math.floor(Number(String(input).slice(0,-3))/60)
+    let _seconds=Number(String(input).slice(0,-3))-(_minutes*60)
+    console.log('converting...')
+    let tmp1_null='';
+    let tmp2_null='';
+    let tmp3_null='';
+    if (_minutes<10) {
+        tmp1_null='0';
+    }else{tmp1_null=''}
+    if (_seconds<10) {
+        tmp2_null='0';
+    }else{tmp2_null=''}
+    if (_milliseconds<100) {
+        tmp3_null='0';
+    }else if (_milliseconds<10) {
+        tmp3_null='00';
+    }else{tmp3_null=''}
+    return tmp1_null+_minutes+":"+tmp2_null+_seconds+":"+tmp3_null+_milliseconds;
 }
 //centering information_div and restart_button
 function centering() {
@@ -216,9 +239,9 @@ function centering() {
     if (falstart_count!==3) {
         information_div.style.left=(x-150)+'px';
     }else{information_div.style.left=(x-210)+'px';}
-    information_div.style.top=(y-75)+'px';
+    // information_div.style.top=(y-75)+'px';
     restart_button.style.left=(x-85)+'px';
-    restart_button.style.top=(y+75)+'px';
+    // restart_button.style.top=(y+75)+'px';
 }
 //losing after 3 falstarts
 function loser() {

@@ -1,6 +1,7 @@
 #all_container{
     display: flex;
     width: 1000px;
+    height: 280px;
     /* background-color: darkgray; */
     background-color: rgb(0, 0, 0);
     /* border: 5px solid rgb(61, 61, 61); */
@@ -74,6 +75,7 @@ html{
     border-radius: 15%;
     /* border: 5px solid rgb(61, 61, 61); */
     border: 5px solid rgb(202, 0, 0);
+    top: 325px; /*distance 30px to all_container */
     height: 100px;
     width: 300px;
     font-size: 50px;
@@ -89,6 +91,7 @@ html{
     border-radius: 15%;
     /* border: 5px solid rgb(61, 61, 61); */
     border: 5px solid rgb(202, 0, 0);
+    top: 465px; /*distance 30px to your_time */
     height: 50px;
     width: 160px;
     font-size: 25px;
@@ -111,6 +114,22 @@ html{
     transition: color 0.5s;
     animation: click 0.2s linear infinite;
 }
+#best_time_container{
+    position: absolute;
+    width: 112.469px;
+    height: max-content;
+    background-color: rgb(0, 0, 0);
+    border: 5px solid rgb(202, 0, 0);
+    color: white;
+    border-radius: 15%;
+    top: 300px;
+    left: 2%;
+    text-align: center;
+    padding: 5px 10px 5px 10px;
+}
+#best_time{
+    margin: 0;
+}
 #avr_time_container{
     position: absolute;
     width: 112.469px;
@@ -119,7 +138,7 @@ html{
     border: 5px solid rgb(202, 0, 0);
     color: white;
     border-radius: 15%;
-    top: 35%;
+    top: 360px;
     left: 2%;
     text-align: center;
     padding: 5px 10px 5px 10px;
@@ -135,7 +154,7 @@ html{
     border: 5px solid rgb(202, 0, 0);
     color: white;
     border-radius: 15%;
-    top: 42%;
+    top: 420px;
     left: 2%;
     text-align: center;
     padding: 10px;
