@@ -6,18 +6,39 @@ const score_board=document.getElementById('score_board');
 const avr_time_html=document.getElementById('avr_time');
 const best_time_html=document.getElementById("best_time");
 const restart_button=document.getElementById('restart_button');
+const all_container=document.getElementById('all_container');
+const best_time_container=document.getElementById('best_time_container');
+const avr_time_container=document.getElementById('avr_time_container');
+const score_board_container=document.getElementById('score_board_container');
 restart_button.addEventListener('click',restart);
 document.body.addEventListener('keydown',space_check);
 function space_check(event) {
     if (event.key === ' ' || event.code === 'Space') {
         race_start();
 }}
-var x = window.innerWidth / 2;
-var y = window.innerHeight / 2;
-information_div.style.left=(x-155)+'px';
-// information_div.style.top=(y-75)+'px';
-restart_button.style.left=(x-85)+'px';
-// restart_button.style.top=(y+75)+'px';
+//don't look [*_*]
+
+// var x = window.innerWidth / 2;
+// var y = window.innerHeight / 2;
+// information_div.style.left=(x-155)+'px';
+// restart_button.style.left=(x-85)+'px';
+// if (x*2<791 && x*2>=428) {
+//     all_container.style.height=317+'px';
+//     best_time_container.style.top=337+'px';
+//     avr_time_container.style.top=397+'px';
+//     score_board_container.style.top=457+'px';
+// }else if(x*2<428){
+//     all_container.style.height=354+'px';
+//     best_time_container.style.top=374+'px';
+//     avr_time_container.style.top=434+'px';
+//     score_board_container.style.top=494+'px';
+// }else{
+//     all_container.style.height=280+'px';
+//     best_time_container.style.top=300+'px';
+//     avr_time_container.style.top=360+'px';
+//     score_board_container.style.top=420+'px';
+// }
+// all_container.style.width=x*2-20+'px';
 window.addEventListener('resize',centering);
 let scores=[];
 let avr_time_array=[];
@@ -36,6 +57,7 @@ let falstart_count=0;
 let tmp_additional_clicks=0;
 let start_date=0;
 let end_date=0;
+centering()
 function race_start() {
     const time_p=document.getElementById('your_time_p')
     //Show final time and end the counting
@@ -215,7 +237,6 @@ function return_timer_format(input) {
     let _milliseconds=String(input).slice(-3)
     let _minutes=Math.floor(Number(String(input).slice(0,-3))/60)
     let _seconds=Number(String(input).slice(0,-3))-(_minutes*60)
-    console.log('converting...')
     let tmp1_null='';
     let tmp2_null='';
     let tmp3_null='';
@@ -227,21 +248,41 @@ function return_timer_format(input) {
     }else{tmp2_null=''}
     if (_milliseconds<100) {
         tmp3_null='0';
-    }else if (_milliseconds<10) {
+    }
+    if (_milliseconds<10) {
         tmp3_null='00';
     }else{tmp3_null=''}
     return tmp1_null+_minutes+":"+tmp2_null+_seconds+":"+tmp3_null+_milliseconds;
 }
-//centering information_div and restart_button
+//adjusting content
 function centering() {
+    console.log('fgd')
     x = window.innerWidth / 2;
     y = window.innerHeight / 2;
     if (falstart_count!==3) {
         information_div.style.left=(x-150)+'px';
     }else{information_div.style.left=(x-210)+'px';}
-    // information_div.style.top=(y-75)+'px';
+    all_container.style.width=x*2-20+'px';
+    all_container.style.height=300+'px';
     restart_button.style.left=(x-85)+'px';
-    // restart_button.style.top=(y+75)+'px';
+
+    if (x*2<791 && x*2>=428) {
+        all_container.style.height=317+'px';
+        best_time_container.style.top=337+'px';
+        avr_time_container.style.top=397+'px';
+        score_board_container.style.top=457+'px';
+    }else if(x*2<428){
+        all_container.style.height=354+'px';
+        best_time_container.style.top=374+'px';
+        avr_time_container.style.top=434+'px';
+        score_board_container.style.top=494+'px';
+    }else{
+        all_container.style.height=280+'px';
+        best_time_container.style.top=300+'px';
+        avr_time_container.style.top=360+'px';
+        score_board_container.style.top=420+'px';
+    }
+    
 }
 //losing after 3 falstarts
 function loser() {
