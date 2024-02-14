@@ -16,29 +16,6 @@ function space_check(event) {
     if (event.key === ' ' || event.code === 'Space') {
         race_start();
 }}
-//don't look [*_*]
-
-// var x = window.innerWidth / 2;
-// var y = window.innerHeight / 2;
-// information_div.style.left=(x-155)+'px';
-// restart_button.style.left=(x-85)+'px';
-// if (x*2<791 && x*2>=428) {
-//     all_container.style.height=317+'px';
-//     best_time_container.style.top=337+'px';
-//     avr_time_container.style.top=397+'px';
-//     score_board_container.style.top=457+'px';
-// }else if(x*2<428){
-//     all_container.style.height=354+'px';
-//     best_time_container.style.top=374+'px';
-//     avr_time_container.style.top=434+'px';
-//     score_board_container.style.top=494+'px';
-// }else{
-//     all_container.style.height=280+'px';
-//     best_time_container.style.top=300+'px';
-//     avr_time_container.style.top=360+'px';
-//     score_board_container.style.top=420+'px';
-// }
-// all_container.style.width=x*2-20+'px';
 window.addEventListener('resize',centering);
 let scores=[];
 let avr_time_array=[];
@@ -259,9 +236,6 @@ function centering() {
     console.log('fgd')
     x = window.innerWidth / 2;
     y = window.innerHeight / 2;
-    if (falstart_count!==3) {
-        information_div.style.left=(x-150)+'px';
-    }else{information_div.style.left=(x-210)+'px';}
     all_container.style.width=x*2-20+'px';
     all_container.style.height=300+'px';
     restart_button.style.left=(x-85)+'px';
@@ -271,16 +245,34 @@ function centering() {
         best_time_container.style.top=337+'px';
         avr_time_container.style.top=397+'px';
         score_board_container.style.top=457+'px';
+        information_div.style.top=294+'px';
+        if (falstart_count!==3) {
+            information_div.style.left=30+'%';
+        }else{information_div.style.left=10+'%';}
+        information_div.style.scale=0.5;
+        information_div.style.border="10px solid rgb(202, 0, 0)";
+        restart_button.style.left=43+'%'
+        restart_button.style.top=385+'px'
     }else if(x*2<428){
         all_container.style.height=354+'px';
         best_time_container.style.top=374+'px';
         avr_time_container.style.top=434+'px';
         score_board_container.style.top=494+'px';
+        information_div.style.top=331+'px';
+        if (falstart_count!==3) {
+            information_div.style.left=30+'%';
+        }else{information_div.style.left=10+'%';}
+        information_div.style.scale=0.5;
+        information_div.style.border="10px solid rgb(202, 0, 0)";
+        restart_button.style.left=43+'%'
+        restart_button.style.top=423+'px'
     }else{
         all_container.style.height=280+'px';
         best_time_container.style.top=300+'px';
         avr_time_container.style.top=360+'px';
         score_board_container.style.top=420+'px';
+        information_div.style.top=325+'px';
+        restart_button.style.top=465+'px'
     }
     
 }
@@ -290,8 +282,8 @@ function loser() {
     document.body.removeEventListener('mousedown',race_start);
     information_div.style.width="420px";
     information_div.innerHTML="<p id='your_time_p'>YOU ARE LOSER</p>";
-    information_div.style.left=(x-205)+'px';
     restart_button.classList.add('show_time')
+    centering()
 }
 //restart button function
 function restart() {
