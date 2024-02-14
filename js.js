@@ -1,3 +1,4 @@
+//ducument variables area
 document.body.addEventListener('mousedown',race_start);
 const bulbs=document.getElementsByClassName('bulb');
 const information_div=document.getElementById('your_time');
@@ -17,6 +18,7 @@ function space_check(event) {
         race_start();
 }}
 window.addEventListener('resize',centering);
+//variables area
 let scores=[];
 let avr_time_array=[];
 let is_timer_started=false;
@@ -71,7 +73,7 @@ function race_start() {
             }else{
                 //turnig on the lights
                 bulbs[tmp_bulb].classList.toggle('red_light')
-            tmp_bulb++;
+                tmp_bulb++;
             }
             if (tmp_bulb==5) {
                 clearInterval(red_lights);
@@ -233,13 +235,10 @@ function return_timer_format(input) {
 }
 //adjusting content
 function centering() {
-    console.log('fgd')
     x = window.innerWidth / 2;
     y = window.innerHeight / 2;
     all_container.style.width=x*2-20+'px';
     all_container.style.height=300+'px';
-    restart_button.style.left=(x-85)+'px';
-
     if (x*2<791 && x*2>=428) {
         all_container.style.height=317+'px';
         best_time_container.style.top=337+'px';
@@ -272,6 +271,11 @@ function centering() {
         avr_time_container.style.top=360+'px';
         score_board_container.style.top=420+'px';
         information_div.style.top=325+'px';
+        if (falstart_count!==3) {
+            information_div.style.left=x-155+'px';
+        }else{information_div.style.left=x-205+'px';}
+        information_div.style.scale=1;
+        information_div.style.border="5px solid rgb(202, 0, 0)";
         restart_button.style.top=465+'px'
     }
     
