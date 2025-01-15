@@ -55,6 +55,7 @@ function race_start() {
         console.log(tmp_final_time)
         time_p.innerText=tmp_final_time;
         score_board_f(tmp_final_time);
+        timer1.innerText=tmp_final_time;
         avr_time_function();
         best_time_check();
         is_timer_started=false;
